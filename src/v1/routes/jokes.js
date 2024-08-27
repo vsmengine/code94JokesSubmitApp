@@ -41,6 +41,7 @@ const express = require('express');
 const router = express.Router();
 const jokesController =  require('./../../controllers/jokeController');
 const moderateAuthMiddleware = require('../../utils/moderateAuthMiddleware');
+const authenticateToken =  require('../../utils/authenticateToken');
 
 /**
  * @swagger
@@ -146,7 +147,7 @@ router.get('/:id', async (req, res, next) => {
  *      500:
  *        description: A server error is occured
  */
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', authenticateToken, moderateAuthMiddleware, async (req, res, next) => {
     jokesController.updateJoke(req, res);
 });
 
@@ -169,7 +170,7 @@ router.put('/:id', async (req, res, next) => {
  *       404:
  *         description: The joke was not found
  */
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', authenticateToken, moderateAuthMiddleware, async (req, res, next) => {
     jokesController.deleteJoke(req, res);
 });
 
